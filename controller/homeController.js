@@ -3,13 +3,13 @@ const dataBase=JSON.parse(fs.readFileSync('./data/concesionarias.json','utf-8'))
 
 module.exports={
     home:(req,res)=>{
-        res.write("**********************************************\n\n");
-        res.write("BIENVENIDOS A NUESTRO SITIO DE CONCESIONARIAS!\n\n");
-        res.write("***********************************************\n\n");
-        res.write("\tNuestras sucursales\n");
-        res.write("\t--------------------\n\n");
+        res.write('**********************************************\n\n');
+        res.write('BIENVENIDOS A NUESTRO SITIO DE CONCESIONARIAS!\n\n');
+        res.write('***********************************************\n\n');
+        res.write('\tNuestras sucursales\n');
+        res.write('\t--------------------\n\n');
         dataBase.forEach((concesionaria)=>{
-            res.write("\t* " + concesionaria.sucursal + "\n\n")
+            res.write(`\t* ${concesionaria.sucursal} \n\n`)
         });
         let totalCount = dataBase.reduce((prev,curr) => {
             return prev + curr.autos.length;

@@ -4,12 +4,14 @@ const dataBase = JSON.parse(fs.readFileSync('./data/concesionarias.json', 'utf-8
 module.exports = {
     sucursal: function (req, res) {
         let cantSu = 0;
-        res.write("\n*******************************************\n\tNUESTRAS SUCURSALES\n*******************************************\n\n");
+        res.write('*************************************\n');
+        res.write('  \tNUESTRAS SUCURSALES\n');
+        res.write('*************************************\n\n');
         dataBase.forEach(function (sucursal) {
-            res.write('\t' + sucursal.sucursal + '\n');
+            res.write(`\t ${sucursal.sucursal} \n`);
             res.write('\t-----------------------------------------------------------------------------------------\n');
-            res.write('\tDireccion: ' + sucursal.direccion + '\n');
-            res.write('\tTelefono: ' + sucursal.telefono + '\n');
+            res.write(`\tDireccion: ${sucursal.direccion} \n`);
+            res.write(`\tTelefono: ${sucursal.telefono} \n`);
             res.write('\t-----------------------------------------------------------------------------------------\n\n');
             cantSu++;
         });
@@ -19,15 +21,19 @@ module.exports = {
         res.end();
     },
     detail: function (req, res) {
-        res.write("\n******************************************\n\tSUCURSAL\n******************************************\n\n");
+        res.write('****************************\n');
+        res.write('  \tSUCURSAL\n');
+        res.write('****************************\n\n');
         dataBase.forEach(function (sucursal) {
             if (sucursal.sucursal == req.params.sucursal) {
-                res.write('\t' + sucursal.sucursal + '\n');
+                res.write(`\t ${sucursal.sucursal} \n`);
                 res.write('\t-----------------------------------------------------------------------------------------\n');
                 res.write(`\tDireccion: ${sucursal.direccion} \n`);
                 res.write(`\tTelefono: ${sucursal.telefono} \n`);
                 res.write('\t-----------------------------------------------------------------------------------------\n\n');
-                res.write("\n***************************************\n\tVEHICULOS\n***************************************\n\n");
+                res.write('****************************\n');
+                res.write('  \tVEHICULOS\n');
+                res.write('****************************\n\n');
                 sucursal.autos.forEach(function (auto) {
                     res.write(`MARCA: ${auto.marca} \n`);
                     res.write(`MODELO: ${auto.modelo} \n`);
