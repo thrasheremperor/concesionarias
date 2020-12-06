@@ -3,9 +3,9 @@ const dataBase = JSON.parse(fs.readFileSync('./data/concesionarias.json', 'utf-8
 
 module.exports = {
     home: function (req, res) {
-        res.write("*************************************\n");
-        res.write("  \tNUESTRAS MARCAS\n");
-        res.write("*************************************\n\n");
+        let message="*************************************\n\n";
+        message+="  \tNUESTRAS MARCAS\n\n";
+        message+="*************************************\n\n";
         let marcasArr = []
         dataBase.forEach((concesionaria) => {
             concesionaria.autos.forEach(concesionaria => {
@@ -13,12 +13,12 @@ module.exports = {
             })
         })
         marcasFiltradas = marcasArr.filter((a, b) => marcasArr.indexOf(a) === b);
-        res.write(`Marcas disponibles: ${marcasFiltradas.length} \n`);
-        res.write("----------------------");
+        message+=`Marcas disponibles: ${marcasFiltradas.length} \n`;
+        message+="_____________________";
         marcasFiltradas.forEach(marcas => {
-            res.write("\n\n Marca: " + marcas)
+            message+=`\n\n Marca: ${marcas}`
         })
-        res.end()
+        res.send(message);
     },
     porMarca: (req, res) => {
         let id = req.params.marca;
@@ -29,25 +29,25 @@ module.exports = {
                 marcas.push(auto)
             })
         })
-        res.write(`\n********************************************************\n`)
-        res.write(`\t\t${id.toUpperCase()} MODELOS DISPONIBLES`)
-        res.write(`\n********************************************************\n\n`);
+        let message=`\n********************************************************\n\n`;
+        message+=`\t\t${id.toUpperCase()} MODELOS DISPONIBLES\n\n`;
+        message+=`\n********************************************************\n\n`;
         marcas.forEach(auto => {
             if (auto.marca == id) {
-                res.write(`MODELO: ${auto.modelo} \n`);
-                res.write(`YEAR: ${auto.anio} \n`);
-                res.write(`COLOR: ${auto.color} \n`);
-                res.write("------------------------------------------------------" + "\n");
+                message+=`MODELO: ${auto.modelo} \n`;
+                message+=`YEAR: ${auto.anio} \n`;
+                message+=`COLOR: ${auto.color} \n`;
+                message+=`------------------------------------------------------\n`;
                 cantAutos++;
             }
         });
         if (cantAutos > 0) {
-            res.write('\n---------------------\n');
-            res.write(`TOTAL DE VEHICULOS: ${cantAutos}`);
-            res.write('\n----------------------\n');
+            message+='\n---------------------\n';
+            message+=`TOTAL DE VEHICULOS: ${cantAutos}`;
+            message+='\n----------------------\n';
         } else {
-            res.write(`Perdon, no se encontro la marca ${req.params.marca}`);
+            message+=`Perdon, no se encontro la marca ${req.params.marca}`;
         };
-        res.end()
+        res.send(message);
     }
 }

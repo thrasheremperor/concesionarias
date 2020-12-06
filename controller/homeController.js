@@ -3,21 +3,21 @@ const dataBase=JSON.parse(fs.readFileSync('./data/concesionarias.json','utf-8'))
 
 module.exports={
     home:(req,res)=>{
-        res.write('**********************************************\n\n');
-        res.write('BIENVENIDOS A NUESTRO SITIO DE CONCESIONARIAS!\n\n');
-        res.write('***********************************************\n\n');
-        res.write('\tNuestras sucursales\n');
-        res.write('\t--------------------\n\n');
+        let message='**********************************************\n\n';
+        message+='BIENVENIDOS A NUESTRO SITIO DE CONCESIONARIAS!\n\n';
+        message+='***********************************************\n\n';
+        message+='\tNuestras sucursales\n';
+        message+='\t_____________________\n\n';
         dataBase.forEach((concesionaria)=>{
-            res.write(`\t* ${concesionaria.sucursal} \n\n`)
+            message+=(`\t* ${concesionaria.sucursal} \n\n`)
         });
         let totalCount = dataBase.reduce((prev,curr) => {
             return prev + curr.autos.length;
-        },0)
-        res.write('-------------------------------------------------------\n');
-        res.write(`Tenemos un total de ${totalCount} autos en nuestras sucursales!\n`);
-        res.write('-------------------------------------------------------');
-        res.end();
+        },0);
+        message+='-------------------------------------------------------\n';
+        message+=`Tenemos un total de ${totalCount} autos en nuestras sucursales!\n`;
+        message+='-------------------------------------------------------';
+        res.send(message);
     }
 }
 

@@ -3,24 +3,24 @@ const dataBase = JSON.parse(fs.readFileSync("./data/concesionarias.json", "utf-8
 
 module.exports = {
     home: function (req, res) {
-        res.write('*************************************\n');
-        res.write('  \tNUESTROS VEHICULOS\n');
-        res.write('*************************************\n\n');
+        let message='*************************************\n\n';
+        message+='  \tNUESTROS VEHICULOS\n\n';
+        message+='*************************************\n\n';
         let totalCount = dataBase.reduce((prev, curr) => {
             return prev + curr.autos.length;
         }, 0);
-        res.write(`TOTAL DE VEHICULOS: ${totalCount}`);
-        res.write('\n____________________________\n\n');
+        message+=`TOTAL DE VEHICULOS: ${totalCount}`;
+        message+='\n____________________________\n\n';
         dataBase.forEach((concesionarias) => {
             concesionarias.autos.forEach((auto) => {
-                res.write(`MARCA: ${auto.marca} \n`);
-                res.write(`MODELO: ${auto.modelo} \n`);
-                res.write(`YEAR: ${auto.anio} \n`);
-                res.write(`COLOR: ${auto.color} \n`);
-                res.write('---------------------------\n\n');
+                message+=`MARCA: ${auto.marca} \n`;
+                message+=`MODELO: ${auto.modelo} \n`;
+                message+=`YEAR: ${auto.anio} \n`;
+                message+=`COLOR: ${auto.color} \n`;
+                message+='---------------------------\n\n';
             })
         });
-        res.end()
+        res.send(message);
     },
     detail: (req, res) => {
         let id = req.params.marca;
@@ -31,26 +31,26 @@ module.exports = {
                 autos.push(auto)
             })
         });
-        res.write('*************************************\n');
-        res.write(`\tMODELOS DE ${id.toUpperCase()}\n`);
-        res.write('*************************************\n\n');
+        let message='*************************************\n\n';
+        message+=`\tMODELOS DE ${id.toUpperCase()}\n\n`;
+        message+='*************************************\n\n';
         autos.forEach(auto => {
             if (auto.marca == id) {
-                res.write(`Modelo: ${auto.modelo} \n`)
-                res.write(`Year: " ${auto.anio} \n`)
-                res.write(`Color: " ${auto.color} \n`)
-                res.write(`----------------------\n`)
+                message+=`MODELO: ${auto.modelo} \n`;
+                message+=`YEAR: " ${auto.anio} \n`;
+                message+=`COLOR: " ${auto.color} \n`;
+                message+=`_____________________\n\n`;
                 cantAutos++;
             };
         });
         if (cantAutos > 0) {
-            res.write('\n---------------------------\n');
-            res.write(`TOTAL: ${cantAutos}`);
-            res.write('\n---------------------------\n');
+            message+='\n---------------------------\n';
+            message+=`TOTAL: ${cantAutos}`;
+            message+='\n---------------------------\n';
         } else {
-            res.write(`Perdon, no se encontro la marca ${req.params.marca}`);
+            message+=`Perdon, no se encontro la marca ${req.params.marca}`;
         }
-        res.end();
+        res.send(message);
     },
     dato: function (req, res) {
         let autos = [];
@@ -60,29 +60,29 @@ module.exports = {
             });
         });
         let cantAutos = 0;
-        res.write('*************************************\n');
-        res.write('  \tVEHICULOS FILTRADOS\n');
-        res.write('*************************************\n\n');
+        let message='*************************************\n\n';
+        message+='  \tVEHICULOS FILTRADOS\n\n';
+        message+='*************************************\n\n';
         dataBase.forEach(function (sucursal) {
             sucursal.autos.forEach(function (auto) {
                 if ((auto.color == req.params.dato || auto.anio == req.params.dato) && auto.marca == req.params.marca) {
-                    res.write(`MARCA: ${auto.marca} \n`);
-                    res.write(`MODELO: ${auto.modelo} \n`);
-                    res.write(`YEAR: ${auto.anio} \n`);
-                    res.write(`COLOR: ${auto.color} \n`);
-                    res.write(`SUCURSAL: ${sucursal.sucursal} \n`);
-                    res.write('---------------------------\n\n');
+                    message+=`MARCA: ${auto.marca} \n`;
+                    message+=`MODELO: ${auto.modelo} \n`;
+                    message+=`YEAR: ${auto.anio} \n`;
+                    message+=`COLOR: ${auto.color} \n`;
+                    message+=`SUCURSAL: ${sucursal.sucursal} \n`;
+                    message+='---------------------------\n\n';
                     cantAutos++;
                 }
             });
         });
         if (cantAutos > 0) {
-            res.write('\n---------------------------\n');
-            res.write(`TOTAL: ${cantAutos}`);
-            res.write('\n---------------------------\n');
+            message+='\n---------------------------\n';
+            message+=`TOTAL: ${cantAutos}`;
+            message+='\n---------------------------\n';
         } else {
-            res.write(`Perdon, no se encontro el ${req.params.marca} ${req.params.dato}`);
+            message+=`Perdon, no se encontro el ${req.params.marca} ${req.params.dato}`;
         };
-        res.end();
+        res.send(message);
     }
 }
