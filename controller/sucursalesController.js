@@ -4,48 +4,54 @@ const dataBase = JSON.parse(fs.readFileSync('./data/concesionarias.json', 'utf-8
 module.exports = {
     sucursal: function (req, res) {
         let cantSu = 0;
-        let message = '*************************************\n\n';
-        message += '  \tNUESTRAS SUCURSALES\n\n';
-        message += '*************************************\n\n';
+        let message = '*************************************<br/><br/>';
+        message += '  \tNUESTRAS SUCURSALES<br/><br/>';
+        message += '*************************************<br/><br/>';
         dataBase.forEach(function (sucursal) {
-            message += `\t ${sucursal.sucursal} \n`;
-            message += '\t-----------------------------------------------------------------------------------------\n';
-            message += `\tDIRECCION: ${sucursal.direccion} \n`;
-            message += `\tTELEFONO: ${sucursal.telefono} \n`;
-            message += '\t-----------------------------------------------------------------------------------------\n\n';
+            message += `\t ${sucursal.sucursal} <br/>`;
+            message += '\t-----------------------------------------------------------------------------------------<br/>';
+            message += `\tDIRECCION: ${sucursal.direccion} <br/>`;
+            message += `\tTELEFONO: ${sucursal.telefono} <br/>`;
+            message += '\t-----------------------------------------------------------------------------------------<br/><br/>';
             cantSu++;
         });
-        message += '\n---------------------------\n';
+        message += '<br/>---------------------------<br/>';
         message += `Total de sucursales: ${cantSu}`;
-        message += '\n---------------------------\n';
+        message += '<br/>---------------------------<br/>';
         res.send(message);
     },
     detail: function (req, res) {
-        res.write('****************************\n\n');
-        res.write('  \tSUCURSAL\n\n');
-        res.write('****************************\n\n');
+        let message = '****************************<br/><br/>';
+        message += '  \tSUCURSAL<br/><br/>';
+        message += '****************************<br/><br/>';
+        let can=0;
         dataBase.forEach(function (sucursal) {
-            if (sucursal.sucursal == req.params.sucursal) {
-                res.write(`\t ${sucursal.sucursal} \n`);
-                res.write('\t-----------------------------------------------------------------------------------------\n');
-                res.write(`\tDIRECCION: ${sucursal.direccion} \n`);
-                res.write(`\tTELEFONO: ${sucursal.telefono} \n`);
-                res.write('\t-----------------------------------------------------------------------------------------\n\n\n');
-                res.write('****************************\n\n');
-                res.write('  \tVEHICULOS\n\n');
-                res.write('****************************\n\n');
+            if (sucursal.sucursal.toLowerCase() == req.params.sucursal) {
+                message += `\t ${sucursal.sucursal.toUpperCase()} <br/>`;
+                message += '\t-----------------------------------------------------------------------------------------<br/>';
+                message += `\tDIRECCION: ${sucursal.direccion} <br/>`;
+                message += `\tTELEFONO: ${sucursal.telefono} <br/>`;
+                message += '\t-----------------------------------------------------------------------------------------<br/><br/><br/>';
+                message += '****************************<br/><br/>';
+                message += '  \tVEHICULOS<br/><br/>';
+                message += '****************************<br/><br/>';
                 sucursal.autos.forEach(function (auto) {
-                    res.write(`MARCA: ${auto.marca} \n`);
-                    res.write(`MODELO: ${auto.modelo} \n`);
-                    res.write(`YEAR: ${auto.anio} \n`);
-                    res.write('_________________________\n\n');
+                    message += `MARCA: ${auto.marca} <br/>`;
+                    message += `MODELO: ${auto.modelo} <br/>`;
+                    message += `YEAR: ${auto.anio} <br/>`;
+                    message += '_________________________<br/><br/>';
+                    can ++;
                 });
-                res.write('\n---------------------------\n');
-                res.write(`TOTAL: ${sucursal.autos.length}`);
-                res.write('\n---------------------------\n');
-            } 
+                message += '<br/>---------------------------<br/>';
+                message += `TOTAL: ${sucursal.autos.length}`;
+                message += '<br/>---------------------------<br/>';
+            }
         });
-        //`Lo siento, por el momento no disponemos de sucursales en ${req.params.sucursal}`
-        res.end();
+        if (can>0){
+            message+=' '
+        }else{
+            message+=`Lo siento, por el momento no disponemos de sucursales en ${req.params.sucursal}`
+        }
+        res.send(message);
     }
 }

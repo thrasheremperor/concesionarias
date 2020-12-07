@@ -3,21 +3,21 @@ const dataBase = JSON.parse(fs.readFileSync("./data/concesionarias.json", "utf-8
 
 module.exports = {
     home: function (req, res) {
-        let message='*************************************\n\n';
-        message+='  \tNUESTROS VEHICULOS\n\n';
-        message+='*************************************\n\n';
+        let message='*************************************<br/><br/>';
+        message+='  \tNUESTROS VEHICULOS<br/><br/>';
+        message+='*************************************<br/><br/>';
         let totalCount = dataBase.reduce((prev, curr) => {
             return prev + curr.autos.length;
         }, 0);
         message+=`TOTAL DE VEHICULOS: ${totalCount}`;
-        message+='\n____________________________\n\n';
+        message+='<br/>____________________________<br/><br/>';
         dataBase.forEach((concesionarias) => {
             concesionarias.autos.forEach((auto) => {
-                message+=`MARCA: ${auto.marca} \n`;
-                message+=`MODELO: ${auto.modelo} \n`;
-                message+=`YEAR: ${auto.anio} \n`;
-                message+=`COLOR: ${auto.color} \n`;
-                message+='---------------------------\n\n';
+                message+=`MARCA: ${auto.marca} <br/>`;
+                message+=`MODELO: ${auto.modelo} <br/>`;
+                message+=`YEAR: ${auto.anio} <br/>`;
+                message+=`COLOR: ${auto.color} <br/>`;
+                message+='---------------------------<br/><br/>';
             })
         });
         res.send(message);
@@ -31,22 +31,22 @@ module.exports = {
                 autos.push(auto)
             })
         });
-        let message='*************************************\n\n';
-        message+=`\tMODELOS DE ${id.toUpperCase()}\n\n`;
-        message+='*************************************\n\n';
+        let message='*************************************<br/><br/>';
+        message+=`\tMODELOS DE ${id.toUpperCase()}<br/><br/>`;
+        message+='*************************************<br/><br/>';
         autos.forEach(auto => {
             if (auto.marca == id) {
-                message+=`MODELO: ${auto.modelo} \n`;
-                message+=`YEAR: " ${auto.anio} \n`;
-                message+=`COLOR: " ${auto.color} \n`;
-                message+=`_____________________\n\n`;
+                message+=`MODELO: ${auto.modelo} <br/>`;
+                message+=`YEAR: " ${auto.anio} <br/>`;
+                message+=`COLOR: " ${auto.color} <br/>`;
+                message+=`_____________________<br/><br/>`;
                 cantAutos++;
             };
         });
         if (cantAutos > 0) {
-            message+='\n---------------------------\n';
+            message+='<br/>---------------------------<br/>';
             message+=`TOTAL: ${cantAutos}`;
-            message+='\n---------------------------\n';
+            message+='<br/>---------------------------<br/>';
         } else {
             message+=`Perdon, no se encontro la marca ${req.params.marca}`;
         }
@@ -60,26 +60,26 @@ module.exports = {
             });
         });
         let cantAutos = 0;
-        let message='*************************************\n\n';
-        message+='  \tVEHICULOS FILTRADOS\n\n';
-        message+='*************************************\n\n';
+        let message='*************************************<br/><br/>';
+        message+='  \tVEHICULOS FILTRADOS<br/><br/>';
+        message+='*************************************<br/><br/>';
         dataBase.forEach(function (sucursal) {
             sucursal.autos.forEach(function (auto) {
                 if ((auto.color == req.params.dato || auto.anio == req.params.dato) && auto.marca == req.params.marca) {
-                    message+=`MARCA: ${auto.marca} \n`;
-                    message+=`MODELO: ${auto.modelo} \n`;
-                    message+=`YEAR: ${auto.anio} \n`;
-                    message+=`COLOR: ${auto.color} \n`;
-                    message+=`SUCURSAL: ${sucursal.sucursal} \n`;
-                    message+='---------------------------\n\n';
+                    message+=`MARCA: ${auto.marca} <br/>`;
+                    message+=`MODELO: ${auto.modelo} <br/>`;
+                    message+=`YEAR: ${auto.anio} <br/>`;
+                    message+=`COLOR: ${auto.color} <br/>`;
+                    message+=`SUCURSAL: ${sucursal.sucursal} <br/>`;
+                    message+='---------------------------<br/><br/>';
                     cantAutos++;
                 }
             });
         });
         if (cantAutos > 0) {
-            message+='\n---------------------------\n';
+            message+='<br/>---------------------------<br/>';
             message+=`TOTAL: ${cantAutos}`;
-            message+='\n---------------------------\n';
+            message+='<br/>---------------------------<br/>';
         } else {
             message+=`Perdon, no se encontro el ${req.params.marca} ${req.params.dato}`;
         };
