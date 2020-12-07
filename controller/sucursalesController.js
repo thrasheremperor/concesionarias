@@ -24,7 +24,7 @@ module.exports = {
         let message = '****************************<br/><br/>';
         message += '  \tSUCURSAL<br/><br/>';
         message += '****************************<br/><br/>';
-        let can=0;
+        let can = 0;
         dataBase.forEach(function (sucursal) {
             if (sucursal.sucursal.toLowerCase() == req.params.sucursal) {
                 message += `\t ${sucursal.sucursal.toUpperCase()} <br/>`;
@@ -40,17 +40,17 @@ module.exports = {
                     message += `MODELO: ${auto.modelo} <br/>`;
                     message += `YEAR: ${auto.anio} <br/>`;
                     message += '_________________________<br/><br/>';
-                    can ++;
+                    can++;
                 });
                 message += '<br/>---------------------------<br/>';
                 message += `TOTAL: ${sucursal.autos.length}`;
                 message += '<br/>---------------------------<br/>';
             }
         });
-        if (can>0){
-            message+=' '
-        }else{
-            message+=`Lo siento, por el momento no disponemos de sucursales en ${req.params.sucursal}`
+        if (can > 0) {
+            message += ' '
+        } else {
+            message += `Lo siento, por el momento no disponemos de sucursales en ${req.params.sucursal}`
         }
         res.send(message);
     }
